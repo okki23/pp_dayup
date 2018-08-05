@@ -13,6 +13,13 @@ class Dashboard extends Parent_Controller {
  	public function __construct(){
  		parent::__construct();
  		$this->load->model('m_dashboard');
+
+ 		if(!$this->session->userdata('username')){
+		   echo "<script language=javascript>
+				 alert('Anda tidak berhak mengakses halaman ini!');
+				 window.location='" . base_url() . "';
+				 </script>";
+		}
  	}
 	public function index(){
 		$data['judul'] = $this->data['judul']; 

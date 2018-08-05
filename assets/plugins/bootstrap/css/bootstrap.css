@@ -6521,6 +6521,12 @@ button.close {
 }
 .pull-right {
   float: right !important;
+ 
+}
+.pull-right-btn {
+  float: right !important;
+  padding: 0 10px 0 10px;
+  margin-top:15px;
 }
 .pull-left {
   float: left !important;

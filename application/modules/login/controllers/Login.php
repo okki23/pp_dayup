@@ -9,12 +9,7 @@ deskripsi  : Class login berisi rincian method atau fungsi logic yang digunakan 
 
 class Login extends Parent_Controller {
 
-  	/*variabel global yang digunakan untuk instance di masing masing method agar dapat
-  	digunakan sewaktu waktu tanpa harus menulis ulang
-  	*/
-  	var $nama_tabel = 'm_user';
-  	var $daftar_field = array('id','id_user','username','password','user_insert','date_insert','user_update','date_update');
-  	var $primary_key = 'id';
+   
 
  	public function __construct(){
  		parent::__construct();
@@ -33,13 +28,12 @@ class Login extends Parent_Controller {
 		
 		//apabila posisi login sebagai superadmin
 		if($posisi == '1'){ 
-			$list = array("username"=>$username,"password"=>$password,"posisi"=>$posisi);
+			$list = array("username"=>$username,"6"=>$password,"posisi"=>$posisi);
 			//var_dump($list);
 			
 			//cek ke database apakah username dan password yang dimaksud tersedia didalam tabel?
 			$auth = $this->m_login->autentikasi_superadmin($username,$password);
-			/* echo $this->db->last_query();
-			exit(); */
+		 
 			$session = $this->m_login->autentikasi_superadmin($username,$password)->row();
 			//apabila tersedia maka akan mengalihkan ke halaman dashboard serta generate session aktif
 			if($auth->num_rows() > 0){
@@ -48,20 +42,19 @@ class Login extends Parent_Controller {
 			}else{
 				echo "<script language=javascript>
 				alert('Akun yang anda masukkan tidak tersedia, Periksa kembali!');
-				window.location='" . base_url('login') . "';
+				window.location='" . base_url() . "';
 				</script>";
 			}
 			
-		//apabila posisi login sebagai admin pppu
+		//apabila posisi login sebagai admin hrd
 		}else if($posisi == '2'){
 			$list = array("username"=>$username,"password"=>$password,"posisi"=>$posisi);
 			//var_dump($list);
 			
 			//cek ke database apakah username dan password yang dimaksud tersedia didalam tabel?
-			$auth = $this->m_login->autentikasi_admin_pppu($username,$password);
-			/* echo $this->db->last_query();
-			exit(); */
-			$session = $this->m_login->autentikasi_admin_pppu($username,$password)->row();
+			$auth = $this->m_login->autentikasi_admin_hrd($username,$password);
+			 
+			$session = $this->m_login->autentikasi_admin_hrd($username,$password)->row();
 			//apabila tersedia maka akan mengalihkan ke halaman dashboard serta generate session aktif
 			if($auth->num_rows() > 0){
 				$this->session->set_userdata(array('username'=>$session->username,'session'=>$posisi));
@@ -69,20 +62,38 @@ class Login extends Parent_Controller {
 			}else{
 				echo "<script language=javascript>
 				alert('Akun yang anda masukkan tidak tersedia, Periksa kembali!');
-				window.location='" . base_url('login') . "';
+				window.location='" . base_url() . "';
 				</script>";
 			}
 			
-		//apabila posisi login sebagai sales
+		//apabila posisi login sebagai supervisor
+		}else if($posisi == '3'){ 
+			$list = array("username"=>$username,"password"=>$password,"posisi"=>$posisi);
+			//var_dump($list);
+			
+			//cek ke database apakah username dan password yang dimaksud tersedia didalam tabel?
+			$auth = $this->m_login->autentikasi_supervisor($username,$password);
+			 
+			$session = $this->m_login->autentikasi_supervisor($username,$password)->row();
+			//apabila tersedia maka akan mengalihkan ke halaman dashboard serta generate session aktif
+			if($auth->num_rows() > 0){
+				$this->session->set_userdata(array('username'=>$session->username,'session'=>$posisi));
+				redirect(base_url('dashboard'));
+			}else{
+				echo "<script language=javascript>
+				alert('Akun yang anda masukkan tidak tersedia, Periksa kembali!');
+				window.location='" . base_url() . "';
+				</script>";
+			}
+		//apabila posisi login sebagai pelamar	
 		}else{
 			$list = array("username"=>$username,"password"=>$password,"posisi"=>$posisi);
 			//var_dump($list);
 			
 			//cek ke database apakah username dan password yang dimaksud tersedia didalam tabel?
-			$auth = $this->m_login->autentikasi_sales($username,$password);
-			/* echo $this->db->last_query();
-			exit(); */
-			$session = $this->m_login->autentikasi_sales($username,$password)->row();
+			$auth = $this->m_login->autentikasi_pelamar($username,$password);
+			 
+			$session = $this->m_login->autentikasi_pelamar($username,$password)->row();
 			//apabila tersedia maka akan mengalihkan ke halaman dashboard serta generate session aktif
 			if($auth->num_rows() > 0){
 				$this->session->set_userdata(array('username'=>$session->username,'session'=>$posisi));
@@ -90,7 +101,7 @@ class Login extends Parent_Controller {
 			}else{
 				echo "<script language=javascript>
 				alert('Akun yang anda masukkan tidak tersedia, Periksa kembali!');
-				window.location='" . base_url('login') . "';
+				window.location='" . base_url() . "';
 				</script>";
 			}
 		}
@@ -102,7 +113,7 @@ class Login extends Parent_Controller {
 		$this->session->sess_destroy();
 		echo "<script language=javascript>
              alert('Anda telah keluar dari ".$this->data['judul']." ');
-             window.location='" . base_url('login') . "';
+             window.location='" . base_url() . "';
              </script>";
 		 
 	}

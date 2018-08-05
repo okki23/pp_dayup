@@ -176,18 +176,23 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="<?php echo base_url('akun_sales'); ?>">Akun Sales</a>
+                                <a href="<?php echo base_url('akun_sales'); ?>">Akun Admin HRD</a>
                             </li>
                             <li>
-                                 <a href="<?php echo base_url('akun_admin_pppu'); ?>">Akun Admin PPPU</a>
+                                 <a href="<?php echo base_url('akun_admin_pppu'); ?>">Akun Supervisor</a>
                             </li> 
+                            <li>
+                                 <a href="<?php echo base_url('akun_admin_pppu'); ?>">Akun Pelamar</a>
+                            </li> 
+                            
+
                         </ul>
                     </li>
                     <li class="header">Menu Transaksi</li>
                     <li>
                         <a href="<?php echo base_url('booking_fee'); ?>">
                             <i class="material-icons">dns</i>
-                            <span>Booking Fee</span>
+                            <span>Pencatatan Uang Masuk</span>
                         </a>
                     </li> 
                     <li>

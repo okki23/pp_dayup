@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Welcome To P3U Meikarta</title>
+    <title> <?php echo $judul; ?> </title>
     <!-- Favicon-->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="body">
 
                 <form id="sign_in" action="<?php echo base_url('login/autentikasi'); ?>" method="POST" enctype="multipart/form-data">
-                    <div class="msg"> Sistem Aplikasi P3U Meikarta </div>
+                    <div class="msg"> <?php echo $judul; ?> </div>
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="material-icons">person</i>
