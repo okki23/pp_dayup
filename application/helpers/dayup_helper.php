@@ -5,9 +5,11 @@ if(!function_exists('level_help')){
 		if($params == 1){
 			$res = 'Super Admin';
 		}else if($params == 2){
-			$res = 'Admin PPPU';
+			$res = 'Admin HRD';
         }else if($params == 3){
-            $res = 'Sales';
+            $res = 'Supervisor';
+        }else{
+            $res = 'Pelamar';
         }
 
 		return $res;

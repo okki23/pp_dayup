@@ -47,7 +47,17 @@
 
     <!-- Waves Effect Plugin Js -->
     <script src="<?php echo base_url(); ?>assets/plugins/node-waves/waves.js"></script>
-
+	<link href="<?php echo base_url('assets/plugins/jquery-ui/css/base/jquery-ui.css'); ?>" rel="stylesheet">
+ 
+ 
+	<!-- TinyMCE -->
+    <script src="<?php echo base_url(); ?>assets/plugins/tinymce/tinymce.js"></script>
+	
+	<script src="<?php echo base_url('assets/plugins/elFinder/js/elfinder.min.js'); ?>"></script>
+    <link href="<?php echo base_url('assets/plugins/elFinder/css/theme.css'); ?>" rel="stylesheet">
+	<link href="<?php echo base_url('assets/plugins/elFinder/css/elfinder.min.css'); ?>" rel="stylesheet">
+	
+ 
     <!-- Jquery DataTable Plugin Js -->
     <script src="<?php echo base_url(); ?>assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
     <script src="<?php echo base_url(); ?>assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
@@ -61,17 +71,106 @@
 
     <!-- Custom Js -->
     <script src="<?php echo base_url(); ?>assets/js/admin.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-lightbox/0.7.0/bootstrap-lightbox.min.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-lightbox/0.7.0/bootstrap-lightbox.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/bootstrap-notify.js"></script>
  
- 
+	
     <script src="<?php echo base_url(); ?>assets/plugins/autosize/autosize.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/pages/ui/notifications.js"></script>
     <script src="<?php echo base_url(); ?>assets/plugins/momentjs/moment.js"></script>
     <script src="<?php echo base_url(); ?>assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>   
     <script src="<?php echo base_url(); ?>assets/js/demo.js"></script>
-	 
+	
+<script type="text/javascript">
+
+function elFinderBrowser(callback, value, meta) {
+    tinymce.activeEditor.windowManager.open({
+        file: '<?php echo base_url("file_manager/filetes"); ?>', // use an absolute path!
+        title: 'Files Manager',
+        width: 900,
+        height: 450,
+        resizable: 'yes'
+    }, {
+        oninsert: function (file, elf) {
+            var url, reg, info;
+
+            // URL normalization
+            url = file;
+
+            reg = "\/[^/]+?\/\.\.\/";
+            while (url.match(reg)) {
+                url = url.replace(reg, '/');
+            }
+
+            var split_info = file.split("/");
+
+            var filename = split_info[split_info.length - 1];
+            
+            var getsize = 0;
+            get_filesize(file, function (size) {
+                //alert("The size of " + filename + " is: " + size + " bytes.");
+                getsize = size;
+            });
+            
+            // Make file info
+            info = filename + ' (' + elf.formatSize(getsize) + ')';
+
+            // Provide file and text for the link dialog
+            if (meta.filetype == 'file') {
+                callback(url, {text: info, title: info});
+            }
+
+            // Provide image and alt text for the image dialog
+            if (meta.filetype == 'image') {
+                callback(url, {alt: info});
+            }
+
+            // Provide alternative source and posted for the media dialog
+            if (meta.filetype == 'media') {
+                callback(url);
+            }
+        }
+    });
+    return false;
+}
+
+// TinyMCE init
+tinymce.init({
+    selector: "#deskripsi",
+    
+	force_p_newlines: false,
+	setup: function (editor) {
+            editor.on('change', function () {
+                tinymce.triggerSave();
+            });
+        },
+    height: 400,
+        plugins: [
+        "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
+        "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+        "save table contextmenu directionality emoticons template textcolor paste fullpage textcolor colorpicker"
+    ],
+    relative_urls: false,
+    remove_script_host: false,
+
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+    file_picker_callback: elFinderBrowser
+});
+
+ 
+
+function get_filesize(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("HEAD", url, true); // Notice "HEAD" instead of "GET",
+    //  to get only the header
+    xhr.onreadystatechange = function () {
+        if (this.readyState == this.DONE) {
+            callback(parseInt(xhr.getResponseHeader("Content-Length")));
+        }
+    };
+    xhr.send();
+}
+ </script>
+	
 </head>
 
 <body class="theme-red">
@@ -138,35 +237,41 @@
                             <span>Home  </span>
                         </a>
                     </li> 
-                    <li class="header">Menu Master</li> 
+                    <li class="header">Menu Master</li>  
                     <li>
-                        <a href="<?php echo base_url('customer'); ?>">
+                        <a href="<?php echo base_url('profil'); ?>">
                            <i class="material-icons">dns</i>
-                            <span>Customer</span>
+                            <span>Profil</span>
+                        </a>
+                    </li> 
+					<li>
+                        <a href="<?php echo base_url('admin_hrd'); ?>">
+                           <i class="material-icons">dns</i>
+                            <span>Admin HRD</span>
                         </a>
                     </li> 
                     <li>
-                        <a href="<?php echo base_url('unit'); ?>">
+                        <a href="<?php echo base_url('supervisor'); ?>">
                            <i class="material-icons">dns</i>
-                            <span>Unit</span>
+                            <span>Supervisor</span>
+                        </a>
+                    </li> 
+                     <li>
+                        <a href="<?php echo base_url('pelamar'); ?>">
+                           <i class="material-icons">dns</i>
+                            <span>Pelamar</span>
                         </a>
                     </li> 
                     <li>
-                        <a href="<?php echo base_url('bank'); ?>">
+                        <a href="<?php echo base_url('lowongan'); ?>">
                            <i class="material-icons">dns</i>
-                            <span>Bank</span>
-                        </a>
-                    </li> 
-                    <li>
-                        <a href="<?php echo base_url('sales'); ?>">
-                           <i class="material-icons">dns</i>
-                            <span>Sales</span>
+                            <span>Lowongan</span>
                         </a>
                     </li>
                      <li>
-                        <a href="<?php echo base_url('admin_pppu'); ?>">
+                        <a href="<?php echo base_url('email'); ?>">
                            <i class="material-icons">dns</i>
-                            <span>Admin PPPU</span>
+                            <span>Email</span>
                         </a>
                     </li> 
                     <li>
@@ -176,13 +281,13 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="<?php echo base_url('akun_sales'); ?>">Akun Admin HRD</a>
+                                <a href="<?php echo base_url('akun_admin_hrd'); ?>">Akun Admin HRD</a>
                             </li>
                             <li>
-                                 <a href="<?php echo base_url('akun_admin_pppu'); ?>">Akun Supervisor</a>
+                                 <a href="<?php echo base_url('akun_supervisor'); ?>">Akun Supervisor</a>
                             </li> 
                             <li>
-                                 <a href="<?php echo base_url('akun_admin_pppu'); ?>">Akun Pelamar</a>
+                                 <a href="<?php echo base_url('akun_pelamar'); ?>">Akun Pelamar</a>
                             </li> 
                             
 
@@ -190,37 +295,33 @@
                     </li>
                     <li class="header">Menu Transaksi</li>
                     <li>
-                        <a href="<?php echo base_url('booking_fee'); ?>">
+                        <a href="<?php echo base_url('lamaran_pekerjaan'); ?>">
                             <i class="material-icons">dns</i>
-                            <span>Pencatatan Uang Masuk</span>
+                            <span>Lamaran Pekerjaan</span>
+                        </a>
+                    </li> 
+					<li>
+                        <a href="<?php echo base_url('daftar_lamaran'); ?>">
+                            <i class="material-icons">dns</i>
+                            <span>Daftar Lamaran</span>
                         </a>
                     </li> 
                     <li>
-                        <a href="<?php echo base_url('pu'); ?>">
+                        <a href="<?php echo base_url('penilaian_seleksi'); ?>">
                             <i class="material-icons">dns</i>
-                            <span>PU</span>
+                            <span>Penilaian Seleksi</span>
                         </a>
                     </li> 
-                    <li>
-                        <a href="<?php echo base_url('validasi_pppu'); ?>">
-                            <i class="material-icons">dns</i>
-                            <span>Validasi P3U</span>
-                        </a>
-                    </li> 
+                   
                     <li>
 					<li class="header">Laporan</li>
                     <li>
-                        <a href="<?php echo base_url('closing'); ?>">
+                        <a href="<?php echo base_url('laporan_seleksi'); ?>">
                             <i class="material-icons">dns</i>
-                            <span>Closing</span>
+                            <span>Laporan Hasil Seleksi</span>
                         </a>
                     </li> 
-                    <li>
-                        <a href="<?php echo base_url('refund'); ?>">
-                            <i class="material-icons">dns</i>
-                            <span>Refund</span>
-                        </a>
-                    </li>  
+                  
 					</ul>
 					
 				<?php
@@ -314,7 +415,7 @@
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; 2018 <a href="javascript:void(0);"> Karlina </a>
+                    &copy; 2018 <a href="javascript:void(0);"> Siti Zahroh </a>
                 </div>
             </div>
             <!-- #Footer -->
